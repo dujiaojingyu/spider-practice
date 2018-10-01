@@ -1,0 +1,68 @@
+# -*- coding: utf-8 -*-
+
+# Define here the models for your scraped items
+#
+# See documentation in:
+# https://doc.scrapy.org/en/latest/topics/items.html
+
+import scrapy
+
+
+class UserItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    is_followed = scrapy.Field()
+    following_count = scrapy.Field()
+    is_hanged = scrapy.Field()
+    shared_count = scrapy.Field()
+    user_type = scrapy.Field()
+    is_unicom_free = scrapy.Field()
+    pins_count = scrapy.Field()
+    is_following = scrapy.Field()
+    marked_answers_text = scrapy.Field()
+    is_activity_blocked = scrapy.Field()
+    type = scrapy.Field()
+    infinity = scrapy.Field()
+    is_force_renamed = scrapy.Field()
+    employment = scrapy.Field()
+    id = scrapy.Field()
+    favorite_count = scrapy.Field()
+    voteup_count = scrapy.Field()
+    live_count = scrapy.Field()
+    is_blocking = scrapy.Field()
+    lite_favorite_content_count = scrapy.Field()
+    education = scrapy.Field()
+    is_baned = scrapy.Field()
+    headline = scrapy.Field()
+    is_enable_signalment = scrapy.Field()
+    is_enable_watermark = scrapy.Field()
+    reactions_count = scrapy.Field()
+    following_favlists_count = scrapy.Field()
+    is_bind_sina = scrapy.Field()
+    favorited_count = scrapy.Field()
+    location = scrapy.Field()
+    open_ebook_feature = scrapy.Field()
+    follower_count = scrapy.Field()
+    badge = scrapy.Field()
+    following_topic_count = scrapy.Field()
+    description = scrapy.Field()
+    business = scrapy.Field()
+    sina_weibo_url = scrapy.Field()
+    columns_count = scrapy.Field()
+    following_columns_count = scrapy.Field()
+    answer_count = scrapy.Field()
+    cover_url = scrapy.Field()
+    url_token = scrapy.Field()
+    question_count = scrapy.Field()
+    articles_count = scrapy.Field()
+    name = scrapy.Field()
+    url = scrapy.Field()
+    gender = scrapy.Field()
+    sina_weibo_name = scrapy.Field()
+    is_locked = scrapy.Field()
+    avatar_url = scrapy.Field()
+    following_question_count = scrapy.Field()
+    thanked_count = scrapy.Field()
+    hosted_live_count = scrapy.Field()
+    participated_live_count = scrapy.Field()
+    independent_articles_count = scrapy.Field()

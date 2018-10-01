@@ -1,0 +1,24 @@
+1、多个目标不同位置一起替换
+import re
+def multiple_replace(text, idict): 
+    # 生成一个正则表达式对象
+    # map(函数，序列（列表，元组，字典）)，当传入字典时起作用的是keys。
+    rx = re.compile('|'.join(map(re.escape, idict))) 
+    # 回调函数
+    def one_xlat(match):  
+        print('one_xlat:',idict[match.group(0)])
+        return idict[match.group(0)] 
+    # rx.sub(repl回调函数或者是替换成的字符串, 要替换的string, count指替换个数。默认为0，表示每个匹配项都替换)
+    return rx.sub(one_xlat, text) #sub启用的是match匹配，会将匹配到的match传入one_xlat函数作为参数
+
+replace_dict = {
+    '<div id="content">':'',
+    ' ':'xxx',
+    '<p>':'',
+    '</p>':'',
+    '<div>':'',
+    '</div>':''
+}
+
+xxx = multiple_replace('a<p>fsdf jh</p>as<div> oj i</div>f',replace_dict)
+print('xxx:',xxx)

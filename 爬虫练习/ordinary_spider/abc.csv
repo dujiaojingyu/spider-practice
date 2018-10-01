@@ -1,0 +1,1498 @@
+body,votes,tags,link,title
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Here is a piece of C++ code that seems very peculiar. For some strange reason, sorting the data miraculously makes the code almost six times faster.</p>
+
+<pre class=""lang-cpp prettyprint-override""><code>#include &lt;algorithm&gt;
+#include &lt;ctime&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    // Generate data
+    const unsigned arraySize = 32768;
+    int data[arraySize];
+
+    for (unsigned c = 0; c &lt; arraySize; ++c)
+        data[c] = std::rand() % 256;
+
+    // !!! With this, the next loop runs faster
+    std::sort(data, data + arraySize);
+
+    // Test
+    clock_t start = clock();
+    long long sum = 0;
+
+    for (unsigned i = 0; i &lt; 100000; ++i)
+    {
+        // Primary loop
+        for (unsigned c = 0; c &lt; arraySize; ++c)
+        {
+            if (data[c] &gt;= 128)
+                sum += data[c];
+        }
+    }
+
+    double elapsedTime = static_cast&lt;double&gt;(clock() - start) / CLOCKS_PER_SEC;
+
+    std::cout &lt;&lt; elapsedTime &lt;&lt; std::endl;
+    std::cout &lt;&lt; ""sum = "" &lt;&lt; sum &lt;&lt; std::endl;
+}
+</code></pre>
+
+<ul>
+<li>Without <code>std::sort(data, data + arraySize);</code>, the code runs in 11.54 seconds.</li>
+<li>With the sorted data, the code runs in 1.93 seconds.</li>
+</ul>
+
+<p>Initially, I thought this might be just a language or compiler anomaly. So I tried it in Java.</p>
+
+<pre class=""lang-java prettyprint-override""><code>import java.util.Arrays;
+import java.util.Random;
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        // Generate data
+        int arraySize = 32768;
+        int data[] = new int[arraySize];
+
+        Random rnd = new Random(0);
+        for (int c = 0; c &lt; arraySize; ++c)
+            data[c] = rnd.nextInt() % 256;
+
+        // !!! With this, the next loop runs faster
+        Arrays.sort(data);
+
+        // Test
+        long start = System.nanoTime();
+        long sum = 0;
+
+        for (int i = 0; i &lt; 100000; ++i)
+        {
+            // Primary loop
+            for (int c = 0; c &lt; arraySize; ++c)
+            {
+                if (data[c] &gt;= 128)
+                    sum += data[c];
+            }
+        }
+
+        System.out.println((System.nanoTime() - start) / 1000000000.0);
+        System.out.println(""sum = "" + sum);
+    }
+}
+</code></pre>
+
+<p>With a somewhat similar but less extreme result.</p>
+
+<hr>
+
+<p>My first thought was that sorting brings the data into the cache, but then I thought how silly that is because the array was just generated.</p>
+
+<ul>
+<li>What is going on?</li>
+<li>Why is it faster to process a sorted array than an unsorted array?</li>
+<li>The code is summing up some independent terms, and the order should not matter.</li>
+</ul>
+    </div>",21876,"java,c++,performance,optimization,branch-prediction",https://stackoverflow.com/questions/11227809/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array,Why is it faster to process a sorted array than an unsorted array?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How come certain random strings produce colors when entered as background colors in HTML? For example:</p>
+
+<p></p><div class=""snippet"" data-lang=""js"" data-hide=""false"" data-console=""false"" data-babel=""false"">
+<div class=""snippet-code"">
+<pre class=""snippet-code-html lang-html prettyprint-override""><code>&lt;body bgcolor=""chucknorris""&gt; test &lt;/body&gt;</code></pre>
+</div>
+</div>
+
+
+<p>...produces a document with a <strong>red background</strong> across all browsers and platforms.</p>
+
+<p>Interestingly, while <code>chucknorri</code> produces a red background as well, <code>chucknorr</code> produces a yellow background.</p>
+
+<p>What's going on <a href=""https://codepen.io/gibinealias/pen/YePwLJ"" rel=""noreferrer"">here</a>?</p>
+    </div>",6612,"html,background-color",https://stackoverflow.com/questions/8318911/why-does-html-think-chucknorris-is-a-color,Why does HTML think “chucknorris” is a color?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I've been messing around with <a href=""http://en.wikipedia.org/wiki/JSON"" rel=""noreferrer"">JSON</a> for some time, just pushing it out as text and it hasn't hurt anybody (that I know of), but I'd like to start doing things properly.</p>
+
+<p>I have seen <em>so</em> many purported ""standards"" for the JSON content type:</p>
+
+<pre><code>application/json
+application/x-javascript
+text/javascript
+text/x-javascript
+text/x-json
+</code></pre>
+
+<p>But which is correct, or best? I gather that there are security and browser support issues varying between them.</p>
+
+<p>I know there's a similar question, <em><a href=""https://stackoverflow.com/questions/404470/what-mime-type-if-json-is-being-returned-by-a-rest-api"">What MIME type if JSON is being returned by a REST API?</a></em>, but I'd like a slightly more targeted answer.</p>
+    </div>",9267,"json,content-type",https://stackoverflow.com/questions/477816/what-is-the-correct-json-content-type,What is the correct JSON content type?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I accidentally committed wrong files to <a href=""https://en.wikipedia.org/wiki/Git_software"" rel=""noreferrer"">Git</a>, but I haven't pushed the commit to the server yet.</p>
+
+<p>How can I undo those commits from the local repository? </p>
+    </div>",18087,"git,git-commit,git-reset,git-revert",https://stackoverflow.com/questions/927358/how-to-undo-the-most-recent-commits-in-git,How to undo the most recent commits in Git?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I want to delete a branch both locally and on my remote project fork on <a href=""http://en.wikipedia.org/wiki/GitHub"" rel=""noreferrer"">GitHub</a>.</p>
+
+<h3>Failed Attempts to Delete Remote Branch</h3>
+
+<pre><code>$ git branch -d remotes/origin/bugfix
+error: branch 'remotes/origin/bugfix' not found.
+
+$ git branch -d origin/bugfix
+error: branch 'origin/bugfix' not found.
+
+$ git branch -rd origin/bugfix
+Deleted remote branch origin/bugfix (was 2a14ef7).
+
+$ git push
+Everything up-to-date
+
+$ git pull
+From github.com:gituser/gitproject
+* [new branch] bugfix -&gt; origin/bugfix
+Already up-to-date.
+</code></pre>
+
+<p>What do I need to do differently to successfully delete the
+<code>remotes/origin/bugfix</code> branch both locally and on GitHub?</p>
+    </div>",14022,"git,git-branch,git-remote,git-local,git-delete",https://stackoverflow.com/questions/2003505/how-do-i-delete-a-git-branch-both-locally-and-remotely,How do I delete a Git branch both locally and remotely?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Recently, I ran some of my JavaScript code through Crockford's <a href=""http://www.jslint.com/"" rel=""noreferrer"">JSLint</a>, and it gave the following error:</p>
+
+<blockquote>
+  <p>Problem at line 1 character 1: Missing ""use strict"" statement.</p>
+</blockquote>
+
+<p>Doing some searching, I realized that some people add <code>""use strict"";</code> into their JavaScript code. Once I added the statement, the error stopped appearing. Unfortunately, Google did not reveal much of the history behind this string statement. Certainly it must have something to do with how the JavaScript is interpreted by the browser, but I have no idea what the effect would be.</p>
+
+<p>So what is <code>""use strict"";</code> all about, what does it imply, and is it still relevant?</p>
+
+<p>Do any of the current browsers respond to the <code>""use strict"";</code> string or is it for future use?</p>
+    </div>",6781,"javascript,syntax,jslint,use-strict",https://stackoverflow.com/questions/1335851/what-does-use-strict-do-in-javascript-and-what-is-the-reasoning-behind-it,"What does “use strict” do in JavaScript, and what is the reasoning behind it?"
+"<div class=""post-text"" itemprop=""text"">
+
+<blockquote>
+  <p><strong>Moderator Note:</strong> Given that this question has already had <em>sixty-six answers</em> posted to it, consider whether or not you are <strong><em>contributing anything new</em></strong> before posting another one.</p>
+</blockquote>
+
+<p>What are the differences between <code>git pull</code> and <code>git fetch</code>?</p>
+    </div>",10287,"git,git-pull,git-fetch",https://stackoverflow.com/questions/292357/what-is-the-difference-between-git-pull-and-git-fetch,What is the difference between 'git pull' and 'git fetch'?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>It is possible to toggle the visibility of an element, using the functions <code>.hide()</code>, <code>.show()</code> or <code>.toggle()</code>.</p>
+
+<p>How would you test if an element is visible or hidden?</p>
+    </div>",6794,"javascript,jquery,dom,visibility",https://stackoverflow.com/questions/178325/how-do-i-check-if-an-element-is-hidden-in-jquery,How do I check if an element is hidden in jQuery?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I have an array of integers, and I'm using the <code>.push()</code> method to add elements to it.</p>
+
+<p>Is there a simple way to remove a specific element from an array? The equivalent of something like <code>array.remove(int);</code>.</p>
+
+<p>I have to use <em>core</em> JavaScript - <em>no</em> frameworks are allowed.</p>
+    </div>",6303,"javascript,arrays",https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript,How do I remove a particular element from an array in JavaScript?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Programming language books explain that value types are created on the <strong>stack</strong>, and reference types are created on the <strong>heap</strong>, without explaining what these two things are. I haven't read a clear explanation of this.  I understand what <em>a stack</em> is. But, </p>
+
+<ul>
+<li>where and what are they (physically in a real computer's memory)?</li>
+<li>To what extent are they controlled by the OS or language runtime?</li>
+<li>What is their scope?</li>
+<li>What determines the size of each of them?</li>
+<li>What makes one faster? </li>
+</ul>
+    </div>",7203,"memory-management,language-agnostic,stack,heap",https://stackoverflow.com/questions/79923/what-and-where-are-the-stack-and-heap,What and where are the stack and heap?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I don't want to rename a remote branch, as described in <em><a href=""https://stackoverflow.com/questions/1526794/rename-master-branch-for-both-local-and-remote-git-repositories?answertab=votes#tab-top"">Rename master branch for both local and remote Git repositories</a></em>.</p>
+
+<p>How can I rename a local branch which hasn't been pushed to a remote branch?</p>
+    </div>",6815,"git,git-branch",https://stackoverflow.com/questions/6591213/how-do-i-rename-a-local-git-branch,How do I rename a local Git branch?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Usually I would expect a <code>String.contains()</code> method, but there doesn't seem to be one. </p>
+
+<p>What is a reasonable way to check for this?</p>
+    </div>",7436,"javascript,string,substring,contains,string-matching",https://stackoverflow.com/questions/1789945/how-to-check-whether-a-string-contains-a-substring-in-javascript,How to check whether a string contains a substring in JavaScript?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I wrote the wrong thing in a commit message. Alternatively, I've forgotten to include some files.</p>
+
+<p>How can I change the commit message/files? The commit has not been pushed yet.</p>
+    </div>",7678,"git,git-commit,git-rewrite-history,amend",https://stackoverflow.com/questions/179123/how-to-modify-existing-unpushed-commits,"How to modify existing, unpushed commits?"
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I mistakenly added files to git using the command:</p>
+
+<pre><code>git add myfile.txt
+</code></pre>
+
+<p>I have not yet run <code>git commit</code>. Is there a way to undo this, so these files won't be included in the commit?</p>
+
+<hr>
+
+<blockquote>
+  <p><sup><em>There are 48 answers so far (some deleted).  Please don't add a new one unless you have some new information.</em></sup></p>
+</blockquote>
+    </div>",7556,"git,version-control,git-commit,git-stage",https://stackoverflow.com/questions/348170/how-to-undo-git-add-before-commit,How to undo 'git add' before commit?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How would you explain JavaScript closures to someone with a knowledge of the concepts they consist of (for example functions, variables and the like), but does not understand closures themselves?</p>
+
+<p>I have seen <a href=""http://en.wikipedia.org/wiki/Scheme_%28programming_language%29"" rel=""noreferrer"">the Scheme example</a> given on Wikipedia, but unfortunately it did not help.</p>
+    </div>",7654,"javascript,function,variables,scope,closures",https://stackoverflow.com/questions/111102/how-do-javascript-closures-work,How do JavaScript closures work?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How can I redirect the user from one page to another using jQuery or pure JavaScript?</p>
+    </div>",7737,"javascript,jquery,redirect",https://stackoverflow.com/questions/503093/how-do-i-redirect-to-another-webpage,How do I redirect to another webpage?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How do I discard changes in my working copy that are not in the index?</p>
+    </div>",3924,git,https://stackoverflow.com/questions/52704/how-do-i-discard-unstaged-changes-in-git,How do I discard unstaged changes in Git?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Is there a good way to explain how to resolve merge conflicts in Git?</p>
+    </div>",4173,"git,git-merge,merge-conflict-resolution,git-conflict-resolution",https://stackoverflow.com/questions/161813/how-to-resolve-merge-conflicts-in-git,How to resolve merge conflicts in Git
+"<div class=""post-text"" itemprop=""text"">
+
+<p>This question attempts to collect the few pearls among the dozens of bad C++ books that are published every year.</p>
+
+<p>Unlike many other programming languages, which are often picked up on the go from tutorials found on the Internet, few are able to quickly pick up C++ without studying a well-written C++ book. It is way too big and complex for doing this. In fact, it is so big and complex, that <strong><em>there are very many very bad C++ books</em></strong> out there. And we are not talking about bad style, but things like sporting <em>glaringly obvious factual errors</em> and <em>promoting abysmally bad programming styles</em>.</p>
+
+<p>Please edit the accepted answer to provide <strong>quality books</strong> and an approximate skill level — <em>preferably</em> <strong>after</strong> <em>discussing your addition in <a href=""http://chat.stackoverflow.com/rooms/10/loungec"">the C++ chat room</a></em>. (The regulars might mercilessly undo your work if they disagree with a recommendation.) Add a short blurb/description about each book that you have personally read/benefited from. Feel free to debate quality, headings, etc. Books that meet the criteria will be added to the list.  Books that have reviews by the Association of C and C++ Users (ACCU) have links to the review. </p>
+
+<p><sub>*Note: FAQs and other resources can be found in the <a href=""https://stackoverflow.com/tags/c%2b%2b/info"">C++ tag info</a> and under <a href=""/questions/tagged/c%2b%2b-faq"" class=""post-tag"" title=""show questions tagged 'c++-faq'"" rel=""tag"">c++-faq</a>. </sub></p>
+    </div>",4252,"c++-faq,c++,c++-faq",https://stackoverflow.com/questions/388242/the-definitive-c-book-guide-and-list,The Definitive C++ Book Guide and List
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I need to check the <code>checked</code> property of a checkbox and perform an action based on the checked property using jQuery.</p>
+
+<p>For example, if the age checkbox is checked, then I need to show a textbox to enter age, else hide the textbox.</p>
+
+<p>But the following code returns <code>false</code> by default:</p>
+
+<pre><code>if ($('#isAgeSelected').attr('checked'))
+{
+    $(""#txtAge"").show();
+}
+else
+{
+    $(""#txtAge"").hide();
+}
+</code></pre>
+
+<p>How do I successfully query the <code>checked</code> property?</p>
+    </div>",3969,"jquery,html,dom,checkbox",https://stackoverflow.com/questions/901712/how-to-check-whether-a-checkbox-is-checked-in-jquery,How to check whether a checkbox is checked in jQuery?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>What is the maximum length of a URL in different browsers? Does it differ among browsers? </p>
+
+<p>Does the HTTP protocol dictate it?</p>
+    </div>",4160,"http,url,browser",https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers,What is the maximum length of a URL in different browsers?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Also how do <code>LEFT JOIN</code>, <code>RIGHT JOIN</code> and <code>FULL JOIN</code> fit in?</p>
+    </div>",4066,"sql,database,join,inner-join,outer-join",https://stackoverflow.com/questions/38549/what-is-the-difference-between-inner-join-and-outer-join,What is the difference between “INNER JOIN” and “OUTER JOIN”?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Is there something in JavaScript similar to <code>@import</code> in CSS that allows you to include a JavaScript file inside another JavaScript file?</p>
+    </div>",4230,"javascript,file,import,include",https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file,How do I include a JavaScript file in another JavaScript file?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How do I get the path of the directory in which a <a href=""http://en.wikipedia.org/wiki/Bash_%28Unix_shell%29"" rel=""noreferrer"">Bash</a> script is located, <em>inside</em> that script?</p>
+
+<p>For instance, let's say I want to use a Bash script as a launcher for another application. I want to change the working directory to the one where the Bash script is located, so I can operate on the files in that directory, like so: </p>
+
+<pre>$ ./application</pre>
+    </div>",4023,"bash,directory",https://stackoverflow.com/questions/59895/getting-the-source-directory-of-a-bash-script-from-within,Getting the source directory of a Bash script from within
+"<div class=""post-text"" itemprop=""text"">
+
+<p>What does the <code>if __name__ == ""__main__"":</code> do?</p>
+
+<pre><code># Threading example
+import time, thread
+
+def myfunction(string, sleeptime, lock, *args):
+    while True:
+        lock.acquire()
+        time.sleep(sleeptime)
+        lock.release()
+        time.sleep(sleeptime)
+
+if __name__ == ""__main__"":
+    lock = thread.allocate_lock()
+    thread.start_new_thread(myfunction, (""Thread #: 1"", 2, lock))
+    thread.start_new_thread(myfunction, (""Thread #: 2"", 2, lock))
+</code></pre>
+    </div>",4264,"python,namespaces,main,python-module,idioms",https://stackoverflow.com/questions/419163/what-does-if-name-main-do,What does if __name__ == “__main__”: do?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>We have an employee whose surname is Null. Our employee lookup application is killed when that last name is used as the search term (which happens to be quite often now). The error received (thanks Fiddler!) is:</p>
+
+<pre class=""lang-none prettyprint-override""><code>&lt;soapenv:Fault&gt;
+   &lt;faultcode&gt;soapenv:Server.userException&lt;/faultcode&gt;
+   &lt;faultstring&gt;coldfusion.xml.rpc.CFCInvocationException: [coldfusion.runtime.MissingArgumentException : The SEARCHSTRING parameter to the getFacultyNames function is required but was not passed in.]&lt;/faultstring&gt;
+</code></pre>
+
+<p>Cute, huh?</p>
+
+<p>The parameter type is <code>string</code>.</p>
+
+<p>I am using:</p>
+
+<ul>
+<li>WSDL (SOAP)</li>
+<li>Flex 3.5</li>
+<li>ActionScript 3</li>
+<li>ColdFusion 8</li>
+</ul>
+
+<p>Note that the error <strong>does not</strong> occur when calling the webservice as an object from a ColdFusion page.</p>
+    </div>",4487,"flex,actionscript,soap,coldfusion,wsdl",https://stackoverflow.com/questions/4456438/how-to-pass-null-a-real-surname-to-a-soap-web-service-in-actionscript-3,How to pass “Null” (a real surname!) to a SOAP web service in ActionScript 3?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>For anchors that act like buttons (for example, <em>Questions</em>, <em>Tags</em>, <em>Users</em>, etc. at the top of the Stack Overflow page) or tabs, is there a CSS standard way to disable the highlighting effect if the user accidentally selects the text?</p>
+
+<p>I realize this could be done with JavaScript, and a little googling yielded the Mozilla-only <code>-moz-user-select</code> option.</p>
+
+<p>Is there a standard-compliant way to accomplish this with CSS, and if not, what is the ""best practice"" approach?</p>
+    </div>",4404,"css,cross-browser,highlighting,textselection",https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting,How to disable text selection highlighting?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Suppose I'm familiar with developing client-side applications in <a href=""http://jquery.com/"" rel=""noreferrer"">jQuery</a>, but now I'd like to start using <a href=""http://angularjs.org/"" rel=""noreferrer"">AngularJS</a>. Can you describe the paradigm shift that is necessary? Here are a few questions that might help you frame an answer:</p>
+
+<ul>
+<li>How do I architect and design client-side web applications differently? What is the biggest difference?</li>
+<li>What should I stop doing/using; What should I start doing/using instead?</li>
+<li>Are there any server-side considerations/restrictions?</li>
+</ul>
+
+<p>I'm not looking for a detailed comparison between <code>jQuery</code> and <code>AngularJS</code>.</p>
+    </div>",4523,"javascript,jquery,angularjs,design",https://stackoverflow.com/questions/14994391/thinking-in-angularjs-if-i-have-a-jquery-background,“Thinking in AngularJS” if I have a jQuery background? [closed]
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How do I see if a file exists or not, without using the <a href=""https://docs.python.org/3.6/reference/compound_stmts.html#try"" rel=""noreferrer""><code>try</code></a> statement?</p>
+    </div>",4465,"python,file",https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists,How do I check whether a file exists?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>According to the HTTP/1.1 Spec: </p>
+
+<blockquote>
+  <p>The <strong><code>POST</code></strong> method is used to request that the origin server accept the entity enclosed in the request as a new subordinate of the resource identified by the <code>Request-URI</code> in the <code>Request-Line</code></p>
+</blockquote>
+
+<p>In other words, <code>POST</code> is used to <strong>create</strong>.</p>
+
+<blockquote>
+  <p>The <strong><code>PUT</code></strong> method requests that the enclosed entity be stored under the supplied <code>Request-URI</code>. If the <code>Request-URI</code> refers to an already existing resource, the enclosed entity SHOULD be considered as a modified version of the one residing on the origin server. If the <code>Request-URI</code> does not point to an existing resource, and that URI is capable of being defined as a new resource by the requesting user agent, the origin server can create the resource with that URI.""</p>
+</blockquote>
+
+<p>That is, <code>PUT</code> is used to <strong>create or update</strong>.</p>
+
+<p>So, which one should be used to create a resource? Or one needs to support both?</p>
+    </div>",4543,"http,rest,post,put",https://stackoverflow.com/questions/630453/put-vs-post-in-rest,PUT vs. POST in REST
+"<div class=""post-text"" itemprop=""text"">
+
+<p>If Python does not have a ternary conditional operator, is it possible to simulate one using other language constructs?  </p>
+    </div>",4548,"python,operators,ternary-operator,conditional-operator,python-2.5",https://stackoverflow.com/questions/394809/does-python-have-a-ternary-conditional-operator,Does Python have a ternary conditional operator?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I have a function <code>foo</code> which makes an Ajax request. How can I return the response from <code>foo</code>? </p>
+
+<p>I tried returning the value from the <code>success</code> callback as well as assigning the response to a local variable inside the function and returning that one, but none of those ways actually return the response.</p>
+
+<pre><code>function foo() {
+    var result;
+
+    $.ajax({
+        url: '...',
+        success: function(response) {
+            result = response;
+            // return response; // &lt;- I tried that one as well
+        }
+    });
+
+    return result;
+}
+
+var result = foo(); // It always ends up being `undefined`.
+</code></pre>
+    </div>",4418,"javascript,ajax,asynchronous,ecmascript-6,ecmascript-2017",https://stackoverflow.com/questions/14220321/how-do-i-return-the-response-from-an-asynchronous-call,How do I return the response from an asynchronous call?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>What is the most efficient way to clone a JavaScript object? I've seen <code>obj = eval(uneval(o));</code> being used, but <a href=""https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/uneval"" rel=""noreferrer"">that's non-standard and only supported by Firefox</a>.<br><br> I've done things like <code>obj = JSON.parse(JSON.stringify(o));</code> but question the efficiency. <br><br> I've also seen recursive copying functions with various flaws.
+<br>
+I'm surprised no canonical solution exists.</p>
+    </div>",4621,"javascript,object,clone",https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript,What is the most efficient way to deep clone an object in JavaScript?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I'd prefer as little formal definition as possible and simple mathematics.</p>
+    </div>",4572,"algorithm,complexity-theory,computer-science,big-o,time-complexity",https://stackoverflow.com/questions/487258/what-is-a-plain-english-explanation-of-big-o-notation,What is a plain English explanation of “Big O” notation?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Say I create an object as follows:</p>
+
+<pre><code>var myObject = {
+    ""ircEvent"": ""PRIVMSG"",
+    ""method"": ""newURI"",
+    ""regex"": ""^http://.*""
+};
+</code></pre>
+
+<p>What is the best way to remove the property <code>regex</code> to end up with new <code>myObject</code> as follows?</p>
+
+<pre><code>var myObject = {
+    ""ircEvent"": ""PRIVMSG"",
+    ""method"": ""newURI""
+};
+</code></pre>
+    </div>",5003,"javascript,javascript-objects,object-properties",https://stackoverflow.com/questions/208105/how-do-i-remove-a-property-from-a-javascript-object,How do I remove a property from a JavaScript object?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>What is the difference between android units of measure?</p>
+
+<ul>
+<li>px</li>
+<li>dip</li>
+<li>dp</li>
+<li>sp</li>
+</ul>
+    </div>",5221,"android,android-layout,user-interface,dimension,units-of-measurement",https://stackoverflow.com/questions/2025282/what-is-the-difference-between-px-dip-dp-and-sp,"What is the difference between “px”, “dip”, “dp” and “sp”?"
+"<div class=""post-text"" itemprop=""text"">
+
+<h2>Form-based authentication for websites</h2>
+
+<p>We believe that Stack Overflow should not just be a resource for very specific technical questions, but also for general guidelines on how to solve variations on common problems. ""Form based authentication for websites"" should be a fine topic for such an experiment.</p>
+
+<h3>It should include topics such as:</h3>
+
+<ul>
+<li>How to log in</li>
+<li>How to log out</li>
+<li>How to remain logged in</li>
+<li>Managing cookies (including recommended settings)</li>
+<li>SSL/HTTPS encryption</li>
+<li>How to store passwords</li>
+<li>Using secret questions</li>
+<li>Forgotten username/password functionality</li>
+<li>Use of <a href=""https://en.wikipedia.org/wiki/Cryptographic_nonce"" rel=""noreferrer"">nonces</a> to prevent <a href=""https://en.wikipedia.org/wiki/Cross-site_request_forgery"" rel=""noreferrer"">cross-site request forgeries (CSRF)</a></li>
+<li><a href=""http://openid.net/"" rel=""noreferrer"">OpenID</a></li>
+<li>""Remember me"" checkbox</li>
+<li>Browser autocompletion of usernames and passwords</li>
+<li>Secret URLs (public <a href=""https://en.wikipedia.org/wiki/Uniform_Resource_Locator"" rel=""noreferrer"">URL</a> protected by digest)</li>
+<li>Checking password strength</li>
+<li>E-mail validation</li>
+<li><em>and much more about</em> <a href=""http://en.wikipedia.org/wiki/Form-based_authentication"" rel=""noreferrer"">form based authentication</a>...</li>
+</ul>
+
+<h3>It should not include things like:</h3>
+
+<ul>
+<li>Roles and authorization</li>
+<li>HTTP basic authentication</li>
+</ul>
+
+<h3>Please help us by:</h3>
+
+<ol>
+<li>Suggesting subtopics</li>
+<li>Submitting good articles about this subject</li>
+<li>Editing the official answer</li>
+</ol>
+    </div>",5033,"security,http,authentication,language-agnostic,article",https://stackoverflow.com/questions/549/the-definitive-guide-to-form-based-website-authentication,The definitive guide to form-based website authentication [closed]
+"<div class=""post-text"" itemprop=""text"">
+
+<p>What are metaclasses and what do we use them for?</p>
+    </div>",4677,"python,oop,metaclass,python-datamodel",https://stackoverflow.com/questions/100003/what-are-metaclasses-in-python,What are metaclasses in Python?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How do I force an overwrite of local files on a <code>git pull</code>?</p>
+
+<p>The scenario is following:</p>
+
+<ul>
+<li>A team member is modifying the templates for a website we are working on</li>
+<li>They are adding some images to the images directory (but forgets to add them under source control)</li>
+<li>They are sending the images by mail, later, to me</li>
+<li>I'm adding the images under the source control and pushing them to GitHub together with other changes</li>
+<li>They cannot pull updates from GitHub because Git doesn't want to overwrite their files.</li>
+</ul>
+
+<p>This is the error I'm getting:</p>
+
+<pre><code>error: Untracked working tree file 'public/images/icon.gif' would be overwritten by merge
+</code></pre>
+
+<p>How do I force Git to overwrite them? The person is a designer - usually I resolve all the conflicts by hand, so the server has the most recent version that they just needs to update on their computer.</p>
+    </div>",5334,"git,version-control,overwrite,git-pull,git-fetch",https://stackoverflow.com/questions/1125968/how-do-i-force-git-pull-to-overwrite-local-files,How do I force “git pull” to overwrite local files?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Example (<em>note the case</em>):</p>
+
+<pre class=""lang-cs prettyprint-override""><code>string s = ""Hello world!"";
+String s = ""Hello world!"";
+</code></pre>
+
+<p>What are the <strong><em>guidelines</em></strong> for the use of each? And what are the <strong><em>differences</em></strong>?</p>
+    </div>",5454,"c#,.net,string,types,alias",https://stackoverflow.com/questions/7074/what-is-the-difference-between-string-and-string-in-c,What is the difference between String and string in C#?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How do you delete untracked local files from your current working tree?</p>
+    </div>",5877,"git,branch,git-branch",https://stackoverflow.com/questions/61212/how-to-remove-local-untracked-files-from-the-current-git-working-tree,How to remove local (untracked) files from the current Git working tree?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I'm using <a href=""http://en.wikipedia.org/wiki/JSLint"" rel=""noreferrer"">JSLint</a> to go through JavaScript, and it's returning many suggestions to replace <code>==</code> (two equals signs) with <code>===</code> (three equals signs) when doing things like comparing <code>idSele_UNVEHtype.value.length == 0</code> inside of an <code>if</code> statement.</p>
+
+<p>Is there a performance benefit to replacing <code>==</code> with <code>===</code>? </p>
+
+<p>Any performance improvement would be welcomed as many comparison operators exist.</p>
+
+<p>If no type conversion takes place, would there be a performance gain over <code>==</code>?</p>
+    </div>",5673,"javascript,operators,equality,equality-operator,identity-operator",https://stackoverflow.com/questions/359494/which-equals-operator-vs-should-be-used-in-javascript-comparisons,Which equals operator (== vs ===) should be used in JavaScript comparisons?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Somebody pushed a branch called <code>test</code> with <code>git push origin test</code> to a shared repository. I can see the branch with <code>git branch -r</code>.</p>
+
+<p>Now I'm trying to check out the remote <code>test</code> branch.</p>
+
+<p>I've tried:</p>
+
+<ul>
+<li><p><code>git checkout test</code> which does nothing</p></li>
+<li><p><code>git checkout origin/test</code> gives <code>* (no branch)</code>. Which is confusing. How can I be on ""no branch""?</p></li>
+</ul>
+
+<p>How do I check out a remote Git branch?</p>
+    </div>",5428,"git,git-checkout,remote-branch",https://stackoverflow.com/questions/1783405/how-do-i-check-out-a-remote-git-branch,How do I check out a remote Git branch?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I always thought Java was <strong>pass-by-reference</strong>.</p>
+
+<p>However, I've seen a couple of blog posts (for example, <a href=""http://javadude.com/articles/passbyvalue.htm"" rel=""noreferrer"">this blog</a>) that claim that it isn't.</p>
+
+<p>I don't think I understand the distinction they're making. </p>
+
+<p>What is the explanation?</p>
+    </div>",5573,"java,methods,parameter-passing,pass-by-reference,pass-by-value",https://stackoverflow.com/questions/40480/is-java-pass-by-reference-or-pass-by-value,Is Java “pass-by-reference” or “pass-by-value”?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>After reading <a href=""http://groups.google.com/group/comp.lang.c++.moderated/msg/33f173780d58dd20"" rel=""noreferrer"">Hidden Features and Dark Corners of C++/STL</a> on <code>comp.lang.c++.moderated</code>, I was completely surprised that the following snippet compiled and worked in both Visual Studio 2008 and G++ 4.4.</p>
+
+<p>Here's the code:</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+int main()
+{
+    int x = 10;
+    while (x --&gt; 0) // x goes to 0
+    {
+        printf(""%d "", x);
+    }
+}
+</code></pre>
+
+<p>I'd assume this is C, since it works in GCC as well. Where is this defined in the standard, and where has it come from?</p>
+    </div>",7853,"c++,operators,code-formatting,standards-compliance",https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c,What is the “-->” operator in C++?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How do I revert from my current state to a snapshot made on a certain commit?</p>
+
+<p>If I do <code>git log</code>, then I get the following output:</p>
+
+<pre><code>$ git log
+commit a867b4af366350be2e7c21b8de9cc6504678a61b`
+Author: Me &lt;me@me.com&gt;
+Date:   Thu Nov 4 18:59:41 2010 -0400
+
+blah blah blah...
+
+commit 25eee4caef46ae64aa08e8ab3f988bc917ee1ce4
+Author: Me &lt;me@me.com&gt;
+Date:   Thu Nov 4 05:13:39 2010 -0400
+
+more blah blah blah...
+
+commit 0766c053c0ea2035e90f504928f8df3c9363b8bd
+Author: Me &lt;me@me.com&gt;
+Date:   Thu Nov 4 00:55:06 2010 -0400
+
+And yet more blah blah...
+
+commit 0d1d7fc32e5a947fbd92ee598033d85bfc445a50
+Author: Me &lt;me@me.com&gt;
+Date:   Wed Nov 3 23:56:08 2010 -0400
+
+Yep, more blah blah.
+</code></pre>
+
+<p>How do revert to the commit from November 3, i.e. commit <code>0d1d7fc</code>?</p>
+    </div>",6134,"git,git-checkout,git-reset,git-revert",https://stackoverflow.com/questions/4114095/how-to-revert-a-git-repository-to-a-previous-commit,How to revert a Git repository to a previous commit
+"<div class=""post-text"" itemprop=""text"">
+
+<p>If I run the following program, which parses two date strings referencing times 1 second apart and compares them:</p>
+
+<pre><code>public static void main(String[] args) throws ParseException {
+    SimpleDateFormat sf = new SimpleDateFormat(""yyyy-MM-dd HH:mm:ss"");  
+    String str3 = ""1927-12-31 23:54:07"";  
+    String str4 = ""1927-12-31 23:54:08"";  
+    Date sDt3 = sf.parse(str3);  
+    Date sDt4 = sf.parse(str4);  
+    long ld3 = sDt3.getTime() /1000;  
+    long ld4 = sDt4.getTime() /1000;
+    System.out.println(ld4-ld3);
+}
+</code></pre>
+
+<p>The output is:</p>
+
+<blockquote>
+  <p>353</p>
+</blockquote>
+
+<p>Why is <code>ld4-ld3</code> not <code>1</code> (as I would expect from the one-second difference in the times), but <code>353</code>?</p>
+
+<p>If I change the dates to times 1 second later:</p>
+
+<pre><code>String str3 = ""1927-12-31 23:54:08"";  
+String str4 = ""1927-12-31 23:54:09"";  
+</code></pre>
+
+<p>Then <code>ld4-ld3</code> will be <code>1</code>.</p>
+
+<hr>
+
+<p>Java version:</p>
+
+<pre class=""lang-none prettyprint-override""><code>java version ""1.6.0_22""
+Java(TM) SE Runtime Environment (build 1.6.0_22-b04)
+Dynamic Code Evolution Client VM (build 0.2-b02-internal, 19.0-b04-internal, mixed mode)
+
+Timezone(`TimeZone.getDefault()`):
+
+sun.util.calendar.ZoneInfo[id=""Asia/Shanghai"",
+offset=28800000,dstSavings=0,
+useDaylight=false,
+transitions=19,
+lastRule=null]
+
+Locale(Locale.getDefault()): zh_CN
+</code></pre>
+    </div>",6094,"java,date,timezone",https://stackoverflow.com/questions/6841333/why-is-subtracting-these-two-times-in-1927-giving-a-strange-result,Why is subtracting these two times (in 1927) giving a strange result?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Can I use comments inside a JSON file? If so, how?</p>
+    </div>",5893,"json,comments",https://stackoverflow.com/questions/244777/can-comments-be-used-in-json,Can comments be used in JSON?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>What is the use of the <code>yield</code> keyword in Python? What does it do?</p>
+
+<p>For example, I'm trying to understand this code<sup><strong>1</strong></sup>:</p>
+
+<pre><code>def _get_child_candidates(self, distance, min_dist, max_dist):
+    if self._leftchild and distance - max_dist &lt; self._median:
+        yield self._leftchild
+    if self._rightchild and distance + max_dist &gt;= self._median:
+        yield self._rightchild  
+</code></pre>
+
+<p>And this is the caller:</p>
+
+<pre><code>result, candidates = [], [self]
+while candidates:
+    node = candidates.pop()
+    distance = node._get_dist(obj)
+    if distance &lt;= max_dist and distance &gt;= min_dist:
+        result.extend(node._values)
+    candidates.extend(node._get_child_candidates(distance, min_dist, max_dist))
+return result
+</code></pre>
+
+<p>What happens when the method <code>_get_child_candidates</code> is called?
+Is a list returned? A single element? Is it called again? When will subsequent calls stop?</p>
+
+<hr>
+
+<p><sub>
+1. The code comes from Jochen Schulz (jrschulz), who made a great Python library for metric spaces. This is the link to the complete source: <a href=""http://well-adjusted.de/~jrschulz/mspace/"" rel=""noreferrer"">Module mspace</a>.</sub></p>
+    </div>",8477,"python,iterator,generator,yield,coroutine",https://stackoverflow.com/questions/231767/what-does-the-yield-keyword-do,What does the “yield” keyword do?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I've recently started maintaining someone else's JavaScript code. I'm fixing bugs, adding features, and also trying to tidy up the code and make it more consistent.</p>
+
+<p>The previous developer uses two ways of declaring functions and I can't work out if there is a reason behind it or not.</p>
+
+<p>The two ways are:</p>
+
+<pre><code>var functionOne = function() {
+    // Some code
+};
+</code></pre>
+
+
+
+<pre><code>function functionTwo() {
+    // Some code
+}
+</code></pre>
+
+<p>What are the reasons for using these two different methods and what are the pros and cons of each? Is there anything that can be done with one method that can't be done with the other?</p>
+    </div>",6124,"javascript,function,syntax,idioms",https://stackoverflow.com/questions/336859/var-functionname-function-vs-function-functionname,var functionName = function() {} vs function functionName() {}
+body,votes,tags,link,title
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Here is a piece of C++ code that seems very peculiar. For some strange reason, sorting the data miraculously makes the code almost six times faster.</p>
+
+<pre class=""lang-cpp prettyprint-override""><code>#include &lt;algorithm&gt;
+#include &lt;ctime&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    // Generate data
+    const unsigned arraySize = 32768;
+    int data[arraySize];
+
+    for (unsigned c = 0; c &lt; arraySize; ++c)
+        data[c] = std::rand() % 256;
+
+    // !!! With this, the next loop runs faster
+    std::sort(data, data + arraySize);
+
+    // Test
+    clock_t start = clock();
+    long long sum = 0;
+
+    for (unsigned i = 0; i &lt; 100000; ++i)
+    {
+        // Primary loop
+        for (unsigned c = 0; c &lt; arraySize; ++c)
+        {
+            if (data[c] &gt;= 128)
+                sum += data[c];
+        }
+    }
+
+    double elapsedTime = static_cast&lt;double&gt;(clock() - start) / CLOCKS_PER_SEC;
+
+    std::cout &lt;&lt; elapsedTime &lt;&lt; std::endl;
+    std::cout &lt;&lt; ""sum = "" &lt;&lt; sum &lt;&lt; std::endl;
+}
+</code></pre>
+
+<ul>
+<li>Without <code>std::sort(data, data + arraySize);</code>, the code runs in 11.54 seconds.</li>
+<li>With the sorted data, the code runs in 1.93 seconds.</li>
+</ul>
+
+<p>Initially, I thought this might be just a language or compiler anomaly. So I tried it in Java.</p>
+
+<pre class=""lang-java prettyprint-override""><code>import java.util.Arrays;
+import java.util.Random;
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        // Generate data
+        int arraySize = 32768;
+        int data[] = new int[arraySize];
+
+        Random rnd = new Random(0);
+        for (int c = 0; c &lt; arraySize; ++c)
+            data[c] = rnd.nextInt() % 256;
+
+        // !!! With this, the next loop runs faster
+        Arrays.sort(data);
+
+        // Test
+        long start = System.nanoTime();
+        long sum = 0;
+
+        for (int i = 0; i &lt; 100000; ++i)
+        {
+            // Primary loop
+            for (int c = 0; c &lt; arraySize; ++c)
+            {
+                if (data[c] &gt;= 128)
+                    sum += data[c];
+            }
+        }
+
+        System.out.println((System.nanoTime() - start) / 1000000000.0);
+        System.out.println(""sum = "" + sum);
+    }
+}
+</code></pre>
+
+<p>With a somewhat similar but less extreme result.</p>
+
+<hr>
+
+<p>My first thought was that sorting brings the data into the cache, but then I thought how silly that is because the array was just generated.</p>
+
+<ul>
+<li>What is going on?</li>
+<li>Why is it faster to process a sorted array than an unsorted array?</li>
+<li>The code is summing up some independent terms, and the order should not matter.</li>
+</ul>
+    </div>",21876,"java,c++,performance,optimization,branch-prediction",https://stackoverflow.com/questions/11227809/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array,Why is it faster to process a sorted array than an unsorted array?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>After reading <a href=""http://groups.google.com/group/comp.lang.c++.moderated/msg/33f173780d58dd20"" rel=""noreferrer"">Hidden Features and Dark Corners of C++/STL</a> on <code>comp.lang.c++.moderated</code>, I was completely surprised that the following snippet compiled and worked in both Visual Studio 2008 and G++ 4.4.</p>
+
+<p>Here's the code:</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+int main()
+{
+    int x = 10;
+    while (x --&gt; 0) // x goes to 0
+    {
+        printf(""%d "", x);
+    }
+}
+</code></pre>
+
+<p>I'd assume this is C, since it works in GCC as well. Where is this defined in the standard, and where has it come from?</p>
+    </div>",7854,"c++,operators,code-formatting,standards-compliance",https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c,What is the “-->” operator in C++?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I mistakenly added files to git using the command:</p>
+
+<pre><code>git add myfile.txt
+</code></pre>
+
+<p>I have not yet run <code>git commit</code>. Is there a way to undo this, so these files won't be included in the commit?</p>
+
+<hr>
+
+<blockquote>
+  <p><sup><em>There are 48 answers so far (some deleted).  Please don't add a new one unless you have some new information.</em></sup></p>
+</blockquote>
+    </div>",7556,"git,version-control,git-commit,git-stage",https://stackoverflow.com/questions/348170/how-to-undo-git-add-before-commit,How to undo 'git add' before commit?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Usually I would expect a <code>String.contains()</code> method, but there doesn't seem to be one. </p>
+
+<p>What is a reasonable way to check for this?</p>
+    </div>",7436,"javascript,string,substring,contains,string-matching",https://stackoverflow.com/questions/1789945/how-to-check-whether-a-string-contains-a-substring-in-javascript,How to check whether a string contains a substring in JavaScript?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I wrote the wrong thing in a commit message. Alternatively, I've forgotten to include some files.</p>
+
+<p>How can I change the commit message/files? The commit has not been pushed yet.</p>
+    </div>",7678,"git,git-commit,git-rewrite-history,amend",https://stackoverflow.com/questions/179123/how-to-modify-existing-unpushed-commits,"How to modify existing, unpushed commits?"
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How can I redirect the user from one page to another using jQuery or pure JavaScript?</p>
+    </div>",7737,"javascript,jquery,redirect",https://stackoverflow.com/questions/503093/how-do-i-redirect-to-another-webpage,How do I redirect to another webpage?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Programming language books explain that value types are created on the <strong>stack</strong>, and reference types are created on the <strong>heap</strong>, without explaining what these two things are. I haven't read a clear explanation of this.  I understand what <em>a stack</em> is. But, </p>
+
+<ul>
+<li>where and what are they (physically in a real computer's memory)?</li>
+<li>To what extent are they controlled by the OS or language runtime?</li>
+<li>What is their scope?</li>
+<li>What determines the size of each of them?</li>
+<li>What makes one faster? </li>
+</ul>
+    </div>",7203,"memory-management,language-agnostic,stack,heap",https://stackoverflow.com/questions/79923/what-and-where-are-the-stack-and-heap,What and where are the stack and heap?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>What is the use of the <code>yield</code> keyword in Python? What does it do?</p>
+
+<p>For example, I'm trying to understand this code<sup><strong>1</strong></sup>:</p>
+
+<pre><code>def _get_child_candidates(self, distance, min_dist, max_dist):
+    if self._leftchild and distance - max_dist &lt; self._median:
+        yield self._leftchild
+    if self._rightchild and distance + max_dist &gt;= self._median:
+        yield self._rightchild  
+</code></pre>
+
+<p>And this is the caller:</p>
+
+<pre><code>result, candidates = [], [self]
+while candidates:
+    node = candidates.pop()
+    distance = node._get_dist(obj)
+    if distance &lt;= max_dist and distance &gt;= min_dist:
+        result.extend(node._values)
+    candidates.extend(node._get_child_candidates(distance, min_dist, max_dist))
+return result
+</code></pre>
+
+<p>What happens when the method <code>_get_child_candidates</code> is called?
+Is a list returned? A single element? Is it called again? When will subsequent calls stop?</p>
+
+<hr>
+
+<p><sub>
+1. The code comes from Jochen Schulz (jrschulz), who made a great Python library for metric spaces. This is the link to the complete source: <a href=""http://well-adjusted.de/~jrschulz/mspace/"" rel=""noreferrer"">Module mspace</a>.</sub></p>
+    </div>",8477,"python,iterator,generator,yield,coroutine",https://stackoverflow.com/questions/231767/what-does-the-yield-keyword-do,What does the “yield” keyword do?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I've been messing around with <a href=""http://en.wikipedia.org/wiki/JSON"" rel=""noreferrer"">JSON</a> for some time, just pushing it out as text and it hasn't hurt anybody (that I know of), but I'd like to start doing things properly.</p>
+
+<p>I have seen <em>so</em> many purported ""standards"" for the JSON content type:</p>
+
+<pre><code>application/json
+application/x-javascript
+text/javascript
+text/x-javascript
+text/x-json
+</code></pre>
+
+<p>But which is correct, or best? I gather that there are security and browser support issues varying between them.</p>
+
+<p>I know there's a similar question, <em><a href=""https://stackoverflow.com/questions/404470/what-mime-type-if-json-is-being-returned-by-a-rest-api"">What MIME type if JSON is being returned by a REST API?</a></em>, but I'd like a slightly more targeted answer.</p>
+    </div>",9267,"json,content-type",https://stackoverflow.com/questions/477816/what-is-the-correct-json-content-type,What is the correct JSON content type?
+"<div class=""post-text"" itemprop=""text"">
+
+<blockquote>
+  <p><strong>Moderator Note:</strong> Given that this question has already had <em>sixty-six answers</em> posted to it, consider whether or not you are <strong><em>contributing anything new</em></strong> before posting another one.</p>
+</blockquote>
+
+<p>What are the differences between <code>git pull</code> and <code>git fetch</code>?</p>
+    </div>",10287,"git,git-pull,git-fetch",https://stackoverflow.com/questions/292357/what-is-the-difference-between-git-pull-and-git-fetch,What is the difference between 'git pull' and 'git fetch'?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I want to delete a branch both locally and on my remote project fork on <a href=""http://en.wikipedia.org/wiki/GitHub"" rel=""noreferrer"">GitHub</a>.</p>
+
+<h3>Failed Attempts to Delete Remote Branch</h3>
+
+<pre><code>$ git branch -d remotes/origin/bugfix
+error: branch 'remotes/origin/bugfix' not found.
+
+$ git branch -d origin/bugfix
+error: branch 'origin/bugfix' not found.
+
+$ git branch -rd origin/bugfix
+Deleted remote branch origin/bugfix (was 2a14ef7).
+
+$ git push
+Everything up-to-date
+
+$ git pull
+From github.com:gituser/gitproject
+* [new branch] bugfix -&gt; origin/bugfix
+Already up-to-date.
+</code></pre>
+
+<p>What do I need to do differently to successfully delete the
+<code>remotes/origin/bugfix</code> branch both locally and on GitHub?</p>
+    </div>",14022,"git,git-branch,git-remote,git-local,git-delete",https://stackoverflow.com/questions/2003505/how-do-i-delete-a-git-branch-both-locally-and-remotely,How do I delete a Git branch both locally and remotely?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Somebody pushed a branch called <code>test</code> with <code>git push origin test</code> to a shared repository. I can see the branch with <code>git branch -r</code>.</p>
+
+<p>Now I'm trying to check out the remote <code>test</code> branch.</p>
+
+<p>I've tried:</p>
+
+<ul>
+<li><p><code>git checkout test</code> which does nothing</p></li>
+<li><p><code>git checkout origin/test</code> gives <code>* (no branch)</code>. Which is confusing. How can I be on ""no branch""?</p></li>
+</ul>
+
+<p>How do I check out a remote Git branch?</p>
+    </div>",5428,"git,git-checkout,remote-branch",https://stackoverflow.com/questions/1783405/how-do-i-check-out-a-remote-git-branch,How do I check out a remote Git branch?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I accidentally committed wrong files to <a href=""https://en.wikipedia.org/wiki/Git_software"" rel=""noreferrer"">Git</a>, but I haven't pushed the commit to the server yet.</p>
+
+<p>How can I undo those commits from the local repository? </p>
+    </div>",18087,"git,git-commit,git-reset,git-revert",https://stackoverflow.com/questions/927358/how-to-undo-the-most-recent-commits-in-git,How to undo the most recent commits in Git?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Example (<em>note the case</em>):</p>
+
+<pre class=""lang-cs prettyprint-override""><code>string s = ""Hello world!"";
+String s = ""Hello world!"";
+</code></pre>
+
+<p>What are the <strong><em>guidelines</em></strong> for the use of each? And what are the <strong><em>differences</em></strong>?</p>
+    </div>",5454,"c#,.net,string,types,alias",https://stackoverflow.com/questions/7074/what-is-the-difference-between-string-and-string-in-c,What is the difference between String and string in C#?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How would you explain JavaScript closures to someone with a knowledge of the concepts they consist of (for example functions, variables and the like), but does not understand closures themselves?</p>
+
+<p>I have seen <a href=""http://en.wikipedia.org/wiki/Scheme_%28programming_language%29"" rel=""noreferrer"">the Scheme example</a> given on Wikipedia, but unfortunately it did not help.</p>
+    </div>",7654,"javascript,function,variables,scope,closures",https://stackoverflow.com/questions/111102/how-do-javascript-closures-work,How do JavaScript closures work?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How do I discard changes in my working copy that are not in the index?</p>
+    </div>",3924,git,https://stackoverflow.com/questions/52704/how-do-i-discard-unstaged-changes-in-git,How do I discard unstaged changes in Git?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I don't want to rename a remote branch, as described in <em><a href=""https://stackoverflow.com/questions/1526794/rename-master-branch-for-both-local-and-remote-git-repositories?answertab=votes#tab-top"">Rename master branch for both local and remote Git repositories</a></em>.</p>
+
+<p>How can I rename a local branch which hasn't been pushed to a remote branch?</p>
+    </div>",6815,"git,git-branch",https://stackoverflow.com/questions/6591213/how-do-i-rename-a-local-git-branch,How do I rename a local Git branch?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How do I get the path of the directory in which a <a href=""http://en.wikipedia.org/wiki/Bash_%28Unix_shell%29"" rel=""noreferrer"">Bash</a> script is located, <em>inside</em> that script?</p>
+
+<p>For instance, let's say I want to use a Bash script as a launcher for another application. I want to change the working directory to the one where the Bash script is located, so I can operate on the files in that directory, like so: </p>
+
+<pre>$ ./application</pre>
+    </div>",4023,"bash,directory",https://stackoverflow.com/questions/59895/getting-the-source-directory-of-a-bash-script-from-within,Getting the source directory of a Bash script from within
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I need to check the <code>checked</code> property of a checkbox and perform an action based on the checked property using jQuery.</p>
+
+<p>For example, if the age checkbox is checked, then I need to show a textbox to enter age, else hide the textbox.</p>
+
+<p>But the following code returns <code>false</code> by default:</p>
+
+<pre><code>if ($('#isAgeSelected').attr('checked'))
+{
+    $(""#txtAge"").show();
+}
+else
+{
+    $(""#txtAge"").hide();
+}
+</code></pre>
+
+<p>How do I successfully query the <code>checked</code> property?</p>
+    </div>",3969,"jquery,html,dom,checkbox",https://stackoverflow.com/questions/901712/how-to-check-whether-a-checkbox-is-checked-in-jquery,How to check whether a checkbox is checked in jQuery?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>What is the maximum length of a URL in different browsers? Does it differ among browsers? </p>
+
+<p>Does the HTTP protocol dictate it?</p>
+    </div>",4160,"http,url,browser",https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers,What is the maximum length of a URL in different browsers?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Also how do <code>LEFT JOIN</code>, <code>RIGHT JOIN</code> and <code>FULL JOIN</code> fit in?</p>
+    </div>",4066,"sql,database,join,inner-join,outer-join",https://stackoverflow.com/questions/38549/what-is-the-difference-between-inner-join-and-outer-join,What is the difference between “INNER JOIN” and “OUTER JOIN”?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Is there a good way to explain how to resolve merge conflicts in Git?</p>
+    </div>",4173,"git,git-merge,merge-conflict-resolution,git-conflict-resolution",https://stackoverflow.com/questions/161813/how-to-resolve-merge-conflicts-in-git,How to resolve merge conflicts in Git
+"<div class=""post-text"" itemprop=""text"">
+
+<p>This question attempts to collect the few pearls among the dozens of bad C++ books that are published every year.</p>
+
+<p>Unlike many other programming languages, which are often picked up on the go from tutorials found on the Internet, few are able to quickly pick up C++ without studying a well-written C++ book. It is way too big and complex for doing this. In fact, it is so big and complex, that <strong><em>there are very many very bad C++ books</em></strong> out there. And we are not talking about bad style, but things like sporting <em>glaringly obvious factual errors</em> and <em>promoting abysmally bad programming styles</em>.</p>
+
+<p>Please edit the accepted answer to provide <strong>quality books</strong> and an approximate skill level — <em>preferably</em> <strong>after</strong> <em>discussing your addition in <a href=""http://chat.stackoverflow.com/rooms/10/loungec"">the C++ chat room</a></em>. (The regulars might mercilessly undo your work if they disagree with a recommendation.) Add a short blurb/description about each book that you have personally read/benefited from. Feel free to debate quality, headings, etc. Books that meet the criteria will be added to the list.  Books that have reviews by the Association of C and C++ Users (ACCU) have links to the review. </p>
+
+<p><sub>*Note: FAQs and other resources can be found in the <a href=""https://stackoverflow.com/tags/c%2b%2b/info"">C++ tag info</a> and under <a href=""/questions/tagged/c%2b%2b-faq"" class=""post-tag"" title=""show questions tagged 'c++-faq'"" rel=""tag"">c++-faq</a>. </sub></p>
+    </div>",4252,"c++-faq,c++,c++-faq",https://stackoverflow.com/questions/388242/the-definitive-c-book-guide-and-list,The Definitive C++ Book Guide and List
+"<div class=""post-text"" itemprop=""text"">
+
+<p>We have an employee whose surname is Null. Our employee lookup application is killed when that last name is used as the search term (which happens to be quite often now). The error received (thanks Fiddler!) is:</p>
+
+<pre class=""lang-none prettyprint-override""><code>&lt;soapenv:Fault&gt;
+   &lt;faultcode&gt;soapenv:Server.userException&lt;/faultcode&gt;
+   &lt;faultstring&gt;coldfusion.xml.rpc.CFCInvocationException: [coldfusion.runtime.MissingArgumentException : The SEARCHSTRING parameter to the getFacultyNames function is required but was not passed in.]&lt;/faultstring&gt;
+</code></pre>
+
+<p>Cute, huh?</p>
+
+<p>The parameter type is <code>string</code>.</p>
+
+<p>I am using:</p>
+
+<ul>
+<li>WSDL (SOAP)</li>
+<li>Flex 3.5</li>
+<li>ActionScript 3</li>
+<li>ColdFusion 8</li>
+</ul>
+
+<p>Note that the error <strong>does not</strong> occur when calling the webservice as an object from a ColdFusion page.</p>
+    </div>",4487,"flex,actionscript,soap,coldfusion,wsdl",https://stackoverflow.com/questions/4456438/how-to-pass-null-a-real-surname-to-a-soap-web-service-in-actionscript-3,How to pass “Null” (a real surname!) to a SOAP web service in ActionScript 3?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>For anchors that act like buttons (for example, <em>Questions</em>, <em>Tags</em>, <em>Users</em>, etc. at the top of the Stack Overflow page) or tabs, is there a CSS standard way to disable the highlighting effect if the user accidentally selects the text?</p>
+
+<p>I realize this could be done with JavaScript, and a little googling yielded the Mozilla-only <code>-moz-user-select</code> option.</p>
+
+<p>Is there a standard-compliant way to accomplish this with CSS, and if not, what is the ""best practice"" approach?</p>
+    </div>",4404,"css,cross-browser,highlighting,textselection",https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting,How to disable text selection highlighting?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How do I see if a file exists or not, without using the <a href=""https://docs.python.org/3.6/reference/compound_stmts.html#try"" rel=""noreferrer""><code>try</code></a> statement?</p>
+    </div>",4466,"python,file",https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists,How do I check whether a file exists?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Suppose I'm familiar with developing client-side applications in <a href=""http://jquery.com/"" rel=""noreferrer"">jQuery</a>, but now I'd like to start using <a href=""http://angularjs.org/"" rel=""noreferrer"">AngularJS</a>. Can you describe the paradigm shift that is necessary? Here are a few questions that might help you frame an answer:</p>
+
+<ul>
+<li>How do I architect and design client-side web applications differently? What is the biggest difference?</li>
+<li>What should I stop doing/using; What should I start doing/using instead?</li>
+<li>Are there any server-side considerations/restrictions?</li>
+</ul>
+
+<p>I'm not looking for a detailed comparison between <code>jQuery</code> and <code>AngularJS</code>.</p>
+    </div>",4523,"javascript,jquery,angularjs,design",https://stackoverflow.com/questions/14994391/thinking-in-angularjs-if-i-have-a-jquery-background,“Thinking in AngularJS” if I have a jQuery background? [closed]
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I have a function <code>foo</code> which makes an Ajax request. How can I return the response from <code>foo</code>? </p>
+
+<p>I tried returning the value from the <code>success</code> callback as well as assigning the response to a local variable inside the function and returning that one, but none of those ways actually return the response.</p>
+
+<pre><code>function foo() {
+    var result;
+
+    $.ajax({
+        url: '...',
+        success: function(response) {
+            result = response;
+            // return response; // &lt;- I tried that one as well
+        }
+    });
+
+    return result;
+}
+
+var result = foo(); // It always ends up being `undefined`.
+</code></pre>
+    </div>",4418,"javascript,ajax,asynchronous,ecmascript-6,ecmascript-2017",https://stackoverflow.com/questions/14220321/how-do-i-return-the-response-from-an-asynchronous-call,How do I return the response from an asynchronous call?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I'd prefer as little formal definition as possible and simple mathematics.</p>
+    </div>",4572,"algorithm,complexity-theory,computer-science,big-o,time-complexity",https://stackoverflow.com/questions/487258/what-is-a-plain-english-explanation-of-big-o-notation,What is a plain English explanation of “Big O” notation?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>According to the HTTP/1.1 Spec: </p>
+
+<blockquote>
+  <p>The <strong><code>POST</code></strong> method is used to request that the origin server accept the entity enclosed in the request as a new subordinate of the resource identified by the <code>Request-URI</code> in the <code>Request-Line</code></p>
+</blockquote>
+
+<p>In other words, <code>POST</code> is used to <strong>create</strong>.</p>
+
+<blockquote>
+  <p>The <strong><code>PUT</code></strong> method requests that the enclosed entity be stored under the supplied <code>Request-URI</code>. If the <code>Request-URI</code> refers to an already existing resource, the enclosed entity SHOULD be considered as a modified version of the one residing on the origin server. If the <code>Request-URI</code> does not point to an existing resource, and that URI is capable of being defined as a new resource by the requesting user agent, the origin server can create the resource with that URI.""</p>
+</blockquote>
+
+<p>That is, <code>PUT</code> is used to <strong>create or update</strong>.</p>
+
+<p>So, which one should be used to create a resource? Or one needs to support both?</p>
+    </div>",4543,"http,rest,post,put",https://stackoverflow.com/questions/630453/put-vs-post-in-rest,PUT vs. POST in REST
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Is there something in JavaScript similar to <code>@import</code> in CSS that allows you to include a JavaScript file inside another JavaScript file?</p>
+    </div>",4230,"javascript,file,import,include",https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file,How do I include a JavaScript file in another JavaScript file?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>If Python does not have a ternary conditional operator, is it possible to simulate one using other language constructs?  </p>
+    </div>",4549,"python,operators,ternary-operator,conditional-operator,python-2.5",https://stackoverflow.com/questions/394809/does-python-have-a-ternary-conditional-operator,Does Python have a ternary conditional operator?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>What are metaclasses and what do we use them for?</p>
+    </div>",4677,"python,oop,metaclass,python-datamodel",https://stackoverflow.com/questions/100003/what-are-metaclasses-in-python,What are metaclasses in Python?
+"<div class=""post-text"" itemprop=""text"">
+
+<h2>Form-based authentication for websites</h2>
+
+<p>We believe that Stack Overflow should not just be a resource for very specific technical questions, but also for general guidelines on how to solve variations on common problems. ""Form based authentication for websites"" should be a fine topic for such an experiment.</p>
+
+<h3>It should include topics such as:</h3>
+
+<ul>
+<li>How to log in</li>
+<li>How to log out</li>
+<li>How to remain logged in</li>
+<li>Managing cookies (including recommended settings)</li>
+<li>SSL/HTTPS encryption</li>
+<li>How to store passwords</li>
+<li>Using secret questions</li>
+<li>Forgotten username/password functionality</li>
+<li>Use of <a href=""https://en.wikipedia.org/wiki/Cryptographic_nonce"" rel=""noreferrer"">nonces</a> to prevent <a href=""https://en.wikipedia.org/wiki/Cross-site_request_forgery"" rel=""noreferrer"">cross-site request forgeries (CSRF)</a></li>
+<li><a href=""http://openid.net/"" rel=""noreferrer"">OpenID</a></li>
+<li>""Remember me"" checkbox</li>
+<li>Browser autocompletion of usernames and passwords</li>
+<li>Secret URLs (public <a href=""https://en.wikipedia.org/wiki/Uniform_Resource_Locator"" rel=""noreferrer"">URL</a> protected by digest)</li>
+<li>Checking password strength</li>
+<li>E-mail validation</li>
+<li><em>and much more about</em> <a href=""http://en.wikipedia.org/wiki/Form-based_authentication"" rel=""noreferrer"">form based authentication</a>...</li>
+</ul>
+
+<h3>It should not include things like:</h3>
+
+<ul>
+<li>Roles and authorization</li>
+<li>HTTP basic authentication</li>
+</ul>
+
+<h3>Please help us by:</h3>
+
+<ol>
+<li>Suggesting subtopics</li>
+<li>Submitting good articles about this subject</li>
+<li>Editing the official answer</li>
+</ol>
+    </div>",5033,"security,http,authentication,language-agnostic,article",https://stackoverflow.com/questions/549/the-definitive-guide-to-form-based-website-authentication,The definitive guide to form-based website authentication [closed]
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Say I create an object as follows:</p>
+
+<pre><code>var myObject = {
+    ""ircEvent"": ""PRIVMSG"",
+    ""method"": ""newURI"",
+    ""regex"": ""^http://.*""
+};
+</code></pre>
+
+<p>What is the best way to remove the property <code>regex</code> to end up with new <code>myObject</code> as follows?</p>
+
+<pre><code>var myObject = {
+    ""ircEvent"": ""PRIVMSG"",
+    ""method"": ""newURI""
+};
+</code></pre>
+    </div>",5003,"javascript,javascript-objects,object-properties",https://stackoverflow.com/questions/208105/how-do-i-remove-a-property-from-a-javascript-object,How do I remove a property from a JavaScript object?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>What is the most efficient way to clone a JavaScript object? I've seen <code>obj = eval(uneval(o));</code> being used, but <a href=""https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/uneval"" rel=""noreferrer"">that's non-standard and only supported by Firefox</a>.<br><br> I've done things like <code>obj = JSON.parse(JSON.stringify(o));</code> but question the efficiency. <br><br> I've also seen recursive copying functions with various flaws.
+<br>
+I'm surprised no canonical solution exists.</p>
+    </div>",4621,"javascript,object,clone",https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript,What is the most efficient way to deep clone an object in JavaScript?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>What does the <code>if __name__ == ""__main__"":</code> do?</p>
+
+<pre><code># Threading example
+import time, thread
+
+def myfunction(string, sleeptime, lock, *args):
+    while True:
+        lock.acquire()
+        time.sleep(sleeptime)
+        lock.release()
+        time.sleep(sleeptime)
+
+if __name__ == ""__main__"":
+    lock = thread.allocate_lock()
+    thread.start_new_thread(myfunction, (""Thread #: 1"", 2, lock))
+    thread.start_new_thread(myfunction, (""Thread #: 2"", 2, lock))
+</code></pre>
+    </div>",4265,"python,namespaces,main,python-module,idioms",https://stackoverflow.com/questions/419163/what-does-if-name-main-do,What does if __name__ == “__main__”: do?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I always thought Java was <strong>pass-by-reference</strong>.</p>
+
+<p>However, I've seen a couple of blog posts (for example, <a href=""http://javadude.com/articles/passbyvalue.htm"" rel=""noreferrer"">this blog</a>) that claim that it isn't.</p>
+
+<p>I don't think I understand the distinction they're making. </p>
+
+<p>What is the explanation?</p>
+    </div>",5573,"java,methods,parameter-passing,pass-by-reference,pass-by-value",https://stackoverflow.com/questions/40480/is-java-pass-by-reference-or-pass-by-value,Is Java “pass-by-reference” or “pass-by-value”?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>What is the difference between android units of measure?</p>
+
+<ul>
+<li>px</li>
+<li>dip</li>
+<li>dp</li>
+<li>sp</li>
+</ul>
+    </div>",5221,"android,android-layout,user-interface,dimension,units-of-measurement",https://stackoverflow.com/questions/2025282/what-is-the-difference-between-px-dip-dp-and-sp,"What is the difference between “px”, “dip”, “dp” and “sp”?"
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I'm using <a href=""http://en.wikipedia.org/wiki/JSLint"" rel=""noreferrer"">JSLint</a> to go through JavaScript, and it's returning many suggestions to replace <code>==</code> (two equals signs) with <code>===</code> (three equals signs) when doing things like comparing <code>idSele_UNVEHtype.value.length == 0</code> inside of an <code>if</code> statement.</p>
+
+<p>Is there a performance benefit to replacing <code>==</code> with <code>===</code>? </p>
+
+<p>Any performance improvement would be welcomed as many comparison operators exist.</p>
+
+<p>If no type conversion takes place, would there be a performance gain over <code>==</code>?</p>
+    </div>",5673,"javascript,operators,equality,equality-operator,identity-operator",https://stackoverflow.com/questions/359494/which-equals-operator-vs-should-be-used-in-javascript-comparisons,Which equals operator (== vs ===) should be used in JavaScript comparisons?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How do you delete untracked local files from your current working tree?</p>
+    </div>",5877,"git,branch,git-branch",https://stackoverflow.com/questions/61212/how-to-remove-local-untracked-files-from-the-current-git-working-tree,How to remove local (untracked) files from the current Git working tree?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>If I run the following program, which parses two date strings referencing times 1 second apart and compares them:</p>
+
+<pre><code>public static void main(String[] args) throws ParseException {
+    SimpleDateFormat sf = new SimpleDateFormat(""yyyy-MM-dd HH:mm:ss"");  
+    String str3 = ""1927-12-31 23:54:07"";  
+    String str4 = ""1927-12-31 23:54:08"";  
+    Date sDt3 = sf.parse(str3);  
+    Date sDt4 = sf.parse(str4);  
+    long ld3 = sDt3.getTime() /1000;  
+    long ld4 = sDt4.getTime() /1000;
+    System.out.println(ld4-ld3);
+}
+</code></pre>
+
+<p>The output is:</p>
+
+<blockquote>
+  <p>353</p>
+</blockquote>
+
+<p>Why is <code>ld4-ld3</code> not <code>1</code> (as I would expect from the one-second difference in the times), but <code>353</code>?</p>
+
+<p>If I change the dates to times 1 second later:</p>
+
+<pre><code>String str3 = ""1927-12-31 23:54:08"";  
+String str4 = ""1927-12-31 23:54:09"";  
+</code></pre>
+
+<p>Then <code>ld4-ld3</code> will be <code>1</code>.</p>
+
+<hr>
+
+<p>Java version:</p>
+
+<pre class=""lang-none prettyprint-override""><code>java version ""1.6.0_22""
+Java(TM) SE Runtime Environment (build 1.6.0_22-b04)
+Dynamic Code Evolution Client VM (build 0.2-b02-internal, 19.0-b04-internal, mixed mode)
+
+Timezone(`TimeZone.getDefault()`):
+
+sun.util.calendar.ZoneInfo[id=""Asia/Shanghai"",
+offset=28800000,dstSavings=0,
+useDaylight=false,
+transitions=19,
+lastRule=null]
+
+Locale(Locale.getDefault()): zh_CN
+</code></pre>
+    </div>",6094,"java,date,timezone",https://stackoverflow.com/questions/6841333/why-is-subtracting-these-two-times-in-1927-giving-a-strange-result,Why is subtracting these two times (in 1927) giving a strange result?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How do I force an overwrite of local files on a <code>git pull</code>?</p>
+
+<p>The scenario is following:</p>
+
+<ul>
+<li>A team member is modifying the templates for a website we are working on</li>
+<li>They are adding some images to the images directory (but forgets to add them under source control)</li>
+<li>They are sending the images by mail, later, to me</li>
+<li>I'm adding the images under the source control and pushing them to GitHub together with other changes</li>
+<li>They cannot pull updates from GitHub because Git doesn't want to overwrite their files.</li>
+</ul>
+
+<p>This is the error I'm getting:</p>
+
+<pre><code>error: Untracked working tree file 'public/images/icon.gif' would be overwritten by merge
+</code></pre>
+
+<p>How do I force Git to overwrite them? The person is a designer - usually I resolve all the conflicts by hand, so the server has the most recent version that they just needs to update on their computer.</p>
+    </div>",5334,"git,version-control,overwrite,git-pull,git-fetch",https://stackoverflow.com/questions/1125968/how-do-i-force-git-pull-to-overwrite-local-files,How do I force “git pull” to overwrite local files?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How do I revert from my current state to a snapshot made on a certain commit?</p>
+
+<p>If I do <code>git log</code>, then I get the following output:</p>
+
+<pre><code>$ git log
+commit a867b4af366350be2e7c21b8de9cc6504678a61b`
+Author: Me &lt;me@me.com&gt;
+Date:   Thu Nov 4 18:59:41 2010 -0400
+
+blah blah blah...
+
+commit 25eee4caef46ae64aa08e8ab3f988bc917ee1ce4
+Author: Me &lt;me@me.com&gt;
+Date:   Thu Nov 4 05:13:39 2010 -0400
+
+more blah blah blah...
+
+commit 0766c053c0ea2035e90f504928f8df3c9363b8bd
+Author: Me &lt;me@me.com&gt;
+Date:   Thu Nov 4 00:55:06 2010 -0400
+
+And yet more blah blah...
+
+commit 0d1d7fc32e5a947fbd92ee598033d85bfc445a50
+Author: Me &lt;me@me.com&gt;
+Date:   Wed Nov 3 23:56:08 2010 -0400
+
+Yep, more blah blah.
+</code></pre>
+
+<p>How do revert to the commit from November 3, i.e. commit <code>0d1d7fc</code>?</p>
+    </div>",6134,"git,git-checkout,git-reset,git-revert",https://stackoverflow.com/questions/4114095/how-to-revert-a-git-repository-to-a-previous-commit,How to revert a Git repository to a previous commit
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I have an array of integers, and I'm using the <code>.push()</code> method to add elements to it.</p>
+
+<p>Is there a simple way to remove a specific element from an array? The equivalent of something like <code>array.remove(int);</code>.</p>
+
+<p>I have to use <em>core</em> JavaScript - <em>no</em> frameworks are allowed.</p>
+    </div>",6303,"javascript,arrays",https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript,How do I remove a particular element from an array in JavaScript?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>How come certain random strings produce colors when entered as background colors in HTML? For example:</p>
+
+<p></p><div class=""snippet"" data-lang=""js"" data-hide=""false"" data-console=""false"" data-babel=""false"">
+<div class=""snippet-code"">
+<pre class=""snippet-code-html lang-html prettyprint-override""><code>&lt;body bgcolor=""chucknorris""&gt; test &lt;/body&gt;</code></pre>
+</div>
+</div>
+
+
+<p>...produces a document with a <strong>red background</strong> across all browsers and platforms.</p>
+
+<p>Interestingly, while <code>chucknorri</code> produces a red background as well, <code>chucknorr</code> produces a yellow background.</p>
+
+<p>What's going on <a href=""https://codepen.io/gibinealias/pen/YePwLJ"" rel=""noreferrer"">here</a>?</p>
+    </div>",6612,"html,background-color",https://stackoverflow.com/questions/8318911/why-does-html-think-chucknorris-is-a-color,Why does HTML think “chucknorris” is a color?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Can I use comments inside a JSON file? If so, how?</p>
+    </div>",5893,"json,comments",https://stackoverflow.com/questions/244777/can-comments-be-used-in-json,Can comments be used in JSON?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>It is possible to toggle the visibility of an element, using the functions <code>.hide()</code>, <code>.show()</code> or <code>.toggle()</code>.</p>
+
+<p>How would you test if an element is visible or hidden?</p>
+    </div>",6794,"javascript,jquery,dom,visibility",https://stackoverflow.com/questions/178325/how-do-i-check-if-an-element-is-hidden-in-jquery,How do I check if an element is hidden in jQuery?
+"<div class=""post-text"" itemprop=""text"">
+
+<p>Recently, I ran some of my JavaScript code through Crockford's <a href=""http://www.jslint.com/"" rel=""noreferrer"">JSLint</a>, and it gave the following error:</p>
+
+<blockquote>
+  <p>Problem at line 1 character 1: Missing ""use strict"" statement.</p>
+</blockquote>
+
+<p>Doing some searching, I realized that some people add <code>""use strict"";</code> into their JavaScript code. Once I added the statement, the error stopped appearing. Unfortunately, Google did not reveal much of the history behind this string statement. Certainly it must have something to do with how the JavaScript is interpreted by the browser, but I have no idea what the effect would be.</p>
+
+<p>So what is <code>""use strict"";</code> all about, what does it imply, and is it still relevant?</p>
+
+<p>Do any of the current browsers respond to the <code>""use strict"";</code> string or is it for future use?</p>
+    </div>",6781,"javascript,syntax,jslint,use-strict",https://stackoverflow.com/questions/1335851/what-does-use-strict-do-in-javascript-and-what-is-the-reasoning-behind-it,"What does “use strict” do in JavaScript, and what is the reasoning behind it?"
+"<div class=""post-text"" itemprop=""text"">
+
+<p>I've recently started maintaining someone else's JavaScript code. I'm fixing bugs, adding features, and also trying to tidy up the code and make it more consistent.</p>
+
+<p>The previous developer uses two ways of declaring functions and I can't work out if there is a reason behind it or not.</p>
+
+<p>The two ways are:</p>
+
+<pre><code>var functionOne = function() {
+    // Some code
+};
+</code></pre>
+
+
+
+<pre><code>function functionTwo() {
+    // Some code
+}
+</code></pre>
+
+<p>What are the reasons for using these two different methods and what are the pros and cons of each? Is there anything that can be done with one method that can't be done with the other?</p>
+    </div>",6124,"javascript,function,syntax,idioms",https://stackoverflow.com/questions/336859/var-functionname-function-vs-function-functionname,var functionName = function() {} vs function functionName() {}
